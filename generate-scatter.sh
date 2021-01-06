@@ -17,5 +17,5 @@ fi
 
 ffmpeg -framerate $FPS -i "$1/plot%4d.png" "$1/out.mp4" -y
 ffmpeg -framerate $FPS -i $"2/plot%4d.png" "$2/out.mp4" -y
-ffmpeg -i "$1/out.mp4" -i "$2/out.mp4" -filter_complex hstack output.mp4 -y
+ffmpeg -i "$1/out.mp4" -i "$2/out.mp4" -filter_complex hstack -c:v libx264 -pix_fmt yuv420p output.mp4 -y
 ffmpeg -i output.mp4 -vf "fps=$FPS,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -framerate $FPS -loop -1 output.gif -y

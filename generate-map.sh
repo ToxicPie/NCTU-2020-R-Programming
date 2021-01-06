@@ -15,5 +15,6 @@ if [ "$2" != "" ]; then
     FPS="$2"
 fi
 
-ffmpeg -framerate $FPS -i "$1/%3d.png" "$1/out.mp4" -y
-ffmpeg -i "$1/out.mp4" -vf "fps=$FPS,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -framerate $FPS -loop -1 "$1.gif" -y
+# use a pixel format that most video players support
+ffmpeg -framerate $FPS -i "$1/%3d.png" -c:v libx264 -pix_fmt yuv420p "$1-output.mp4" -y
+ffmpeg -i "$1-output.mp4" -vf "fps=$FPS,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -framerate $FPS -loop -1 "$1-output.gif" -y
